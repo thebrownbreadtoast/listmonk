@@ -103,16 +103,10 @@ get_containers() {
 }
 
 modify_config(){
-	info "generating a random password"
-	db_password=$(generate_password)
-
 	info "modifying config.toml"
 	sed_inplace 'host = "localhost"' 'host = "listmonk_db"' config.toml
-	sed_inplace 'password = "listmonk"' "password = \"${db_password}\"" config.toml
-	sed_inplace 'address = "localhost:9000"' 'address = "0.0.0.0:9000"' config.toml
 
-	info "modifying docker-compose.yml"
-	sed_inplace 'POSTGRES_PASSWORD=listmonk' "POSTGRES_PASSWORD=$db_password" docker-compose.yml
+	sed_inplace 'address = "localhost:9000"' 'address = "0.0.0.0:9000"' config.toml
 }
 
 run_migrations(){
